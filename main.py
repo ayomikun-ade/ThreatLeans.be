@@ -38,8 +38,8 @@ async def general_question(request: UserQuestion):
         You are a cybersecurity assistant called ThreatLens, you answers questions and query's concerning the field of cybersecurity.  
         Any other questions regarding any other thing should be ignored.
         
-        User Question: {request.question}
-        Responses should not be more than 210 words
+        User Question: {request.question}.
+        Responses should not be more than 210 words.
         """
         chat_completion = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
