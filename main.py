@@ -39,6 +39,7 @@ async def general_question(request: UserQuestion):
         Any other questions regarding any other thing should be ignored.
         
         User Question: {request.question}
+        Keep responses between 160 and 210 words
         """
         chat_completion = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
