@@ -25,13 +25,16 @@ groq_client = Groq(api_key=GROQ_API_KEY)
 class UserQuestion(BaseModel):
     question: str
 
+class PotentialThreat(BaseModel):
+    message: str
+
 
 @app.get("/")
 def index_route():
     return {"message": "ThreatLens API is running"}
 
 
-@app.post("/general-question")
+@app.post("/api/general-question")
 async def general_question(request: UserQuestion):
     try:
         prompt = f"""
@@ -44,12 +47,35 @@ async def general_question(request: UserQuestion):
         chat_completion = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=500,
+            max_tokens=300,
             temperature=1,
         )
 
         response = chat_completion.choices[0].message.content
 
         return {"answer": response}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/api/prediction")
+async def general_question(request: PotentialThreat):
+    try:
+        prompt = f"""
+        You are a social engineering attack prediction chatbot called ThreatLens and your main purpose is to analyze user submitted messages for potential threats.
+        
+        Messages: {request.message}.
+        Responses should not be more than 250 words.
+        """
+        chat_completion = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=500,
+            temperature=1,
+        )
+
+        response = chat_completion.choices[0].message.content
+
+        return {"verdict": response}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
