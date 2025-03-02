@@ -59,7 +59,7 @@ async def general_question(request: UserQuestion):
     
 
 @app.post("/api/prediction")
-async def general_question(request: PotentialThreat):
+async def prediction(request: PotentialThreat):
     try:
         prompt = f"""
         You are a social engineering attack prediction chatbot called ThreatLens and your main purpose is to analyze user submitted messages for potential threats.
