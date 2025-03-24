@@ -66,6 +66,11 @@ async def prediction(request: PotentialThreat):
         You are a social engineering attack prediction chatbot called ThreatLens and your main purpose is to analyze user submitted messages for potential threats.
         
         Messages: {request.message}.
+        
+        Based on the information, provide:
+        - A verdict (e.g., "Safe", "Suspicious", "Likely a Scam").
+        - An explanation with key red flags.
+        - A recommended action.
         Responses should not be more than 210 words.
         """
         chat_completion = groq_client.chat.completions.create(
